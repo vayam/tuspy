@@ -1,7 +1,6 @@
 # tuspy
 
-TUS Protocol 0.2 Client Implementation
-http://www.tus.io/protocols/resumable-upload.html
+[TUS Protocol 0.2](http://www.tus.io/protocols/resumable-upload.html) Client Implementation
 
 ## Installation
 ```

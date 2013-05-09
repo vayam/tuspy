@@ -22,8 +22,9 @@ def die(msg, exit_code=0):
     print msg
     sys.exit(exit_code)
 
-def upload(location, filename, content_type, offset=0):
+def upload(location, filename, offset=0):
     c = None
+    content_type = "application/offset+octet-stream"
     try:
         c = pycurl.Curl()
         #c.setopt(pycurl.VERBOSE, 1)
@@ -58,9 +59,11 @@ def upload(location, filename, content_type, offset=0):
 parser = OptionParser()
 parser.add_option("-f", "--file", dest="filename",
                   help="file to upload")
+"""
 parser.add_option("-t", "--content-type",
                   dest="content_type", default="binary/octet-stream",
                   help="content-type")
+"""
 
 (options, args) = parser.parse_args()
 
@@ -70,9 +73,6 @@ if not options.filename:
     sys.exit(0)
 
 filename = options.filename
-content_type  = options.content_type
-
-
 filesize = os.path.getsize(filename)
 c  = requests.post(config.CREATE_ENDPT, headers={"Final-Length": filesize})
 if c.status_code != 201:
@@ -97,7 +97,7 @@ for i in attempts():
         if offset == filesize:
             status = "upload success"
             break
-        upload(location, filename, content_type, offset)
+        upload(location, filename, offset)
         offset = get_offset(location)
         if offset == filesize:
             status = "upload success"
