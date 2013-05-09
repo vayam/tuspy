@@ -22,14 +22,11 @@ Options:
   -h, --help            show this help message and exit
   -f FILENAME, --file=FILENAME
                         file to upload
-  -t CONTENT_TYPE, --content-type=CONTENT_TYPE
-                        content-type
-
 ```
 
 ## Example
 ```
-python tuspy.py -f big_buck_bunny.mp4 -t video/mp4
+python tuspy.py -f big_buck_bunny.mp4
 ```
 
 ## License
