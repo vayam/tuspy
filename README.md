@@ -1,6 +1,6 @@
 # tuspy
 
-[TUS Protocol 0.2](http://www.tus.io/protocols/resumable-upload.html) Client Implementation
+[TUS Protocol 0.2.1](http://www.tus.io/protocols/resumable-upload.html) Client Implementation
 
 ## Installation
 ```
@@ -10,7 +10,7 @@ pip install pycurl
 
 ## Configuration
 ```
-Modify CREATE_ENDPT = "http://localhost:8080/files" in  config.py
+Modify CREATE_ENDPT = "http://master.tus.io/files/" in  config.py
 ```
 
 ## Run
@@ -22,11 +22,14 @@ Options:
   -h, --help            show this help message and exit
   -f FILENAME, --file=FILENAME
                         file to upload
+  -u UPLOAD_SPEED, --upload_speed=UPLOAD_SPEED
+                        upload speed in bytes per second
 ```
 
 ## Example
 ```
-python tuspy.py -f big_buck_bunny.mp4
+wget http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v
+python tuspy.py -f BigBuckBunny_640x360.m4v
 ```
 
 ## License
