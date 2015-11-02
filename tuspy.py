@@ -11,9 +11,7 @@ import pycurl
 import config
 
 #exponential backoff
-initial_delay = 10 # 10 seconds
-max_attempts = 3
-def attempts():
+def attempts(max_attempts=3, initial_delay=10):
     for i in range(max_attempts):
         yield i
         time.sleep(initial_delay ** i)
