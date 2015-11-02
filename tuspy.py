@@ -45,7 +45,7 @@ def upload(location, filename, offset=0, upload_speed=None):
         if upload_speed:
             c.setopt(pycurl.MAX_SEND_SPEED_LARGE, upload_speed)
         c.setopt(pycurl.INFILESIZE, filesize - offset)
-        c.setopt(pycurl.HTTPHEADER, ["Expect:", "Content-Type: %s" % content_type, "Offset: %d" % offset])
+        c.setopt(pycurl.HTTPHEADER, ["Expect:", "Content-Type: %s" % content_type, "Upload-Offset: %d" % offset, "Tus-Resumable: 1.0.0"])
         c.perform()
 
         response_code = c.getinfo(pycurl.RESPONSE_CODE)
@@ -88,7 +88,7 @@ except:
 
 filename = options.filename
 filesize = os.path.getsize(filename)
-c  = requests.post(config.CREATE_ENDPT, headers={"Final-Length": filesize})
+c  = requests.post(config.CREATE_ENDPT, headers={"Upload-Length": filesize, "Tus-Resumable": "1.0.0"})
 if c.status_code != 201:
     die("create failure. reason: %s"  % c.reason)
 
@@ -96,9 +96,8 @@ location = c.headers["Location"]
 print location
 
 def get_offset(location):
-    h = requests.head(location)
-    print h.headers
-    offset = int(h.headers["Offset"])
+    h = requests.head(location,  headers={"Tus-Resumable": "1.0.0"})
+    offset = int(h.headers["Upload-Offset"])
     print "Offset: ", offset
     return offset 
 
