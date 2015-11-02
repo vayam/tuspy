@@ -1,6 +1,6 @@
 # tuspy
 
-[TUS Protocol 0.2.1](http://www.tus.io/protocols/resumable-upload.html) Client Implementation
+[TUS Protocol 1.0.0](https://github.com/tus/tus-resumable-upload-protocol/blob/1.0/protocol.md) Client Implementation
 
 ## Installation
 ```
@@ -10,7 +10,7 @@ pip install pycurl
 
 ## Configuration
 ```
-Modify CREATE_ENDPT = "http://master.tus.io/files/" in  config.py
+Modify CREATE_ENDPT = "http://localhost:1080/files/" in  config.py
 ```
 
 ## Run
