@@ -22,6 +22,21 @@ def die(msg, exit_code=0):
     print msg
     sys.exit(exit_code)
 
+def get_endpt(filename):
+    filesize = os.path.getsize(filename)
+    c  = requests.post(config.CREATE_ENDPT, headers={"Upload-Length": filesize, "Tus-Resumable": "1.0.0"})
+    if c.status_code != 201:
+        die("create failure. reason: %s"  % c.reason)
+    location = c.headers["Location"]
+    print location
+    return location
+
+def get_offset(location):
+    h = requests.head(location,  headers={"Tus-Resumable": "1.0.0"})
+    offset = int(h.headers["Upload-Offset"])
+    print "Offset: ", offset
+    return offset 
+
 def upload(location, filename, offset=0, upload_speed=None):
     c = None
     content_type = "application/offset+octet-stream"
@@ -87,23 +102,15 @@ except:
     sys.exit(0)    
 
 filename = options.filename
-filesize = os.path.getsize(filename)
-c  = requests.post(config.CREATE_ENDPT, headers={"Upload-Length": filesize, "Tus-Resumable": "1.0.0"})
-if c.status_code != 201:
-    die("create failure. reason: %s"  % c.reason)
 
-location = c.headers["Location"]
-print location
-
-def get_offset(location):
-    h = requests.head(location,  headers={"Tus-Resumable": "1.0.0"})
-    offset = int(h.headers["Upload-Offset"])
-    print "Offset: ", offset
-    return offset 
+if not os.path.exists(filename):
+    die("%s not found" % filename)
 
 
 status = "upload failure"
 offset = 0
+filesize = os.path.getsize(filename)
+location = get_endpt(filename)
 for i in attempts():
     try:
         offset = get_offset(location)
