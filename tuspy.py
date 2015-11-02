@@ -100,10 +100,8 @@ except:
     sys.exit(0)    
 
 filename = options.filename
-
-if not os.path.exists(filename):
-    die("%s not found" % filename)
-
+if not os.path.isfile(filename):
+    die("invalid file %s" % filename)
 
 status = "upload failure"
 offset = 0
